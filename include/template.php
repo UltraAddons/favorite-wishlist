@@ -7,6 +7,7 @@ if( is_array( $meta ) && in_array( $product_id, $meta ) ){
     $status = 'liked';
 }
 ?>
+<!-- Test Comment -->
 <div class="wpt-favorite-button favorite-button-<?php echo esc_attr($id); ?> favorite-button-<?php echo esc_attr( $status ); ?>" 
        name="favorite" value="Favorite" 
        data-product_id="<?php echo esc_attr( $id ); ?>" 
