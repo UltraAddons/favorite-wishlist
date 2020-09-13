@@ -1,0 +1,21 @@
+.wpt-favorite-button {
+    height: 20px;
+    width: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+.favorite {
+    white-space: nowrap;
+    min-width: 88px;
+}
+.wpt-favorite-button.favorite-button-no-like{
+    background-image: url("images/icon_star.png");
+}
+.wpt-favorite-button.favorite-button-liked{
+    background-image: url("images/icon_star_filled.png");
+}
+
+.favorite .wpt-favorite-button, .favorite .message-favorite-button {
+    display: inline-block;
+}
+.message-favorite-button{display: none;}
