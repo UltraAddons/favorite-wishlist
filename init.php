@@ -88,7 +88,7 @@ function favorite_column_settings($column_settings){
 //add_action( 'wpto_column_setting_form_favorite', 'favorite_column_settings' );
 
 if( !function_exists( 'favorite_column_template' ) ){
-    function favorite_column_template( $file ){
+    function favorite_column_template( $file = '' ){
         $file = __DIR__ . '/include/template.php';
         return $file;
     }
@@ -177,7 +177,7 @@ if( file_exists( $WPT_Module ) ){
    include_once $WPT_Module;
 }
 if( !function_exists( 'fav_table_content_change' ) ){
-    function fav_table_content_change( $table_ID){
+    function fav_table_content_change( $table_ID = ''){
        $user_id = get_current_user_id();
         if(!$user_id && $table_ID == get_option( 'favorite_table_id' )){
             echo ' <a class="button favorite_login_button" href="' . wp_login_url() . '"> Log in</a>';
@@ -186,5 +186,15 @@ if( !function_exists( 'fav_table_content_change' ) ){
     }
 }
 add_action('wpto_action_start_table','fav_table_content_change', 99, 2);
+
+if( !function_exists( 'fav_button_add_on_single_product_page' ) ) {
+    function fav_button_add_on_single_product_page() {
+        $user_id = get_current_user_id();
+        // echo ' <a class="button favorite_login_button" href="' . wp_login_url() . '"> Log in</a>';
+        // var_dump(favorite_column_template());
+        include favorite_column_template();
+    }
+}
+add_action( 'woocommerce_single_product_summary', 'fav_button_add_on_single_product_page', 40 );
 
 
