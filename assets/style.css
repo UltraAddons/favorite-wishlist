@@ -1,8 +1,36 @@
+.wpt-favorite-button-wrapper:after,
+.wpt-favorite-button-wrapper:before {
+    content: "";
+    display: block;
+    clear: both;
+}
+.wpt-favorite-button, a.fav-browse-link {
+    float: left;
+}
 .wpt-favorite-button {
-    height: 20px;
-    width: 20px;
-    line-height: 1;
+    background-repeat: no-repeat;
+    padding: 3px;
+    display: inline-block;
     cursor: pointer;
+    min-width: 20px;
+    min-height: 32px;
+    background-position: 0 5px;
+}
+.wpt-favorite-button.favorite-button-liked {
+    padding-left: 30px;
+}
+.normal_table_wrapper .wpt-favorite-button.favorite-button-liked+a.fav-browse-link {
+    display: none !important;
+}
+.wpt-favorite-button+a.fav-browse-link {
+    padding: 3px 0;
+    color: #000;
+}
+.wpt-favorite-button.favorite-button-no-like+a.fav-browse-link {
+    display: none;
+}
+.wpt-favorite-button.favorite-button-liked a.fav-browse-link {
+    display: block;
 }
 .favorite {
     white-space: nowrap;

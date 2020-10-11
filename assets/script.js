@@ -28,11 +28,13 @@ jQuery(document).ready(function($){
                         $('.favorite-button-' + product_id).removeClass('favorite-button-liked');
                         $('.favorite-button-' + product_id).addClass('favorite-button-no-like');
                         $('.favorite-button-' + product_id).attr('data-status','no-like');
+                        //$('.favorite-button-' + product_id).remove('a.fav-browse-link');
                     }else{
                         $('.message-favorite-button-' + product_id).html("Liked");
                         $('.favorite-button-' + product_id).removeClass('favorite-button-no-like');
                         $('.favorite-button-' + product_id).addClass('favorite-button-liked');
                         $('.favorite-button-' + product_id).attr('data-status','liked');
+                        //$('.favorite-button-' + product_id).append('<a class="fav-browse-link" href="'+ myAjax.favorite_page_link +'" target="_blank">Browse List</a>');
                     }
                 },
                 error: function() {

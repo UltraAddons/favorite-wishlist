@@ -22,10 +22,15 @@ add_action( 'admin_menu', 'favorite_admin_menu' );
 if( !function_exists( 'wpt_favorite_products_callback' ) ){
     function wpt_favorite_products_callback(){
         $value = filter_input(INPUT_POST, 'favorite_products_table_id');
+        $fav_page_id = filter_input(INPUT_POST, 'favorite_page_id');
         if($value){
             update_option('favorite_table_id', $value);
         }
         $c_value = get_option('favorite_table_id');
+        if( $fav_page_id ) {
+            update_option('favorite_page_id', $fav_page_id);
+        }
+        $fav_page_id = get_option('favorite_page_id');
         ?>
 <style type="text/css">
     .fav-container {
@@ -59,6 +64,24 @@ if( !function_exists( 'wpt_favorite_products_callback' ) ){
                         </td>
                     </tr>
                     <tr>
+                        <th><label for="favorite_page_id">Select Favorite Page</label></th>
+                        <td>
+                            <select name="favorite_page_id" id="favorite_page_id">
+                                 
+                            <?php
+                            
+                            $pages = get_pages();
+                            foreach($pages as $page){
+                                $sel = ($fav_page_id == $page->ID) ? 'selected' : '';
+                                echo '<option value="'. $page->ID .'" '. $sel .'>'. $page->post_title .'</option>';
+                            }
+                            
+                            ?>
+                           </select>
+                            <p class="hint">Select a page where you want to display favorite product list.</p>
+                        </td>
+                    </tr>
+                    <tr>
                         <td colspan="2"><input type="submit" value="SAVE SETTINGS" class="button primary"/></td>
                     </tr>
                 </table>
@@ -88,7 +111,7 @@ function favorite_column_settings($column_settings){
 //add_action( 'wpto_column_setting_form_favorite', 'favorite_column_settings' );
 
 if( !function_exists( 'favorite_column_template' ) ){
-    function favorite_column_template( $file ){
+    function favorite_column_template( $file = '' ){
         $file = __DIR__ . '/include/template.php';
         return $file;
     }
@@ -112,7 +135,6 @@ if( !function_exists( 'favorite_user_meta_update' ) ){
         if(!$user_id){
             echo ' <a class="favorite_login_button" href="' . wp_login_url() . '"> Log in</a>';
             die();
-            //return;
         }
         $product_id = $_POST['product_id'];
         $status = $_POST['status'];
@@ -133,7 +155,8 @@ if( !function_exists( 'favorite_user_meta_update' ) ){
         }
 
         update_user_meta($user_id,'liked_product', $current_liked);
-        echo 'success';
+        $result = 'success';
+        echo $result;
         die();
     }
 }
@@ -148,7 +171,6 @@ if( !function_exists( 'qrr_arg' ) ){
         if( $table_ID == $selected_table_id ){
             $user_id = get_current_user_id();
             $liked_product_list = get_user_meta($user_id, 'liked_product',true);
-            //var_dump($liked_product_list);
             $liked_product_list = !empty( $liked_product_list ) ? $liked_product_list : array(0);
             $args['post__in'] = $liked_product_list;
         }
@@ -164,7 +186,6 @@ if( !function_exists( 'fav_table_show_hide' ) ){
        $user_id = get_current_user_id();
         if(!$user_id && $table_ID == get_option( 'favorite_table_id' )){
             return false;
-            //return;
         }
         return true;
     }
@@ -177,7 +198,7 @@ if( file_exists( $WPT_Module ) ){
    include_once $WPT_Module;
 }
 if( !function_exists( 'fav_table_content_change' ) ){
-    function fav_table_content_change( $table_ID){
+    function fav_table_content_change( $table_ID = ''){
        $user_id = get_current_user_id();
         if(!$user_id && $table_ID == get_option( 'favorite_table_id' )){
             echo ' <a class="button favorite_login_button" href="' . wp_login_url() . '"> Log in</a>';
@@ -186,5 +207,14 @@ if( !function_exists( 'fav_table_content_change' ) ){
     }
 }
 add_action('wpto_action_start_table','fav_table_content_change', 99, 2);
+
+if( !function_exists( 'fav_button_add_on_single_product_page' ) ) {
+    function fav_button_add_on_single_product_page() {
+//        $user_id = get_current_user_id();
+//         echo ' <a class="button favorite_login_button" href="' . wp_login_url() . '"> Log in</a>';
+        include favorite_column_template();
+    }
+}
+add_action( 'woocommerce_single_product_summary', 'fav_button_add_on_single_product_page', 40 );
 
 
